@@ -24,7 +24,7 @@ class AppButton extends StatelessWidget {
             style: AppText.b1,
           ),
         ),
-        color: const Color(0xffee8f8b),
+        color: const Color(0xff26c6da),
       ),
     );
   }

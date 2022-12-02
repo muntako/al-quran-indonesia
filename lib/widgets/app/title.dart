@@ -12,7 +12,7 @@ class CustomTitle extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
 
     return Positioned(
-      top: height * 0.12,
+      // top: height * 0.12,
       left: width * 0.05,
       child: Text(
         title!,

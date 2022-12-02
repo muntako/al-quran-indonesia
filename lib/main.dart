@@ -1,3 +1,8 @@
+import 'package:al_quran/cubits/chapterId/cubit.dart';
+import 'package:al_quran/cubits/juzId/cubit.dart';
+import 'package:al_quran/models/chapterId/chapterId.dart';
+import 'package:al_quran/models/juzId/juzId.dart';
+import 'package:al_quran/models/surah/surah.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +17,7 @@ import 'package:al_quran/cubits/juz/cubit.dart';
 import 'package:al_quran/models/ayah/ayah.dart';
 import 'package:al_quran/models/chapter/chapter.dart';
 import 'package:al_quran/models/juz/juz.dart';
+import 'package:al_quran/models/juzId/juzId.dart';
 import 'package:al_quran/providers/app_provider.dart';
 import 'package:al_quran/providers/onboarding_provider.dart';
 import 'package:al_quran/screens/bookmarks/bookmarks_screen.dart';
@@ -35,6 +41,9 @@ Future<void> main() async {
   Hive.registerAdapter<Juz>(JuzAdapter());
   Hive.registerAdapter<Ayah>(AyahAdapter());
   Hive.registerAdapter<Chapter>(ChapterAdapter());
+  Hive.registerAdapter<JuzId>(JuzIdAdapter());
+  Hive.registerAdapter<ChapterId>(ChapterIdAdapter());
+  Hive.registerAdapter<Surah>(SurahAdapter());
 
   await Hive.openBox('app');
   await Hive.openBox('data');
@@ -62,6 +71,8 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(create: (_) => JuzCubit()),
         BlocProvider(create: (_) => ChapterCubit()),
         BlocProvider(create: (_) => BookmarkCubit()),
+        BlocProvider(create: (_) => JuzIdCubit()),
+        BlocProvider(create: (_) => ChapterIdCubit()),
         ChangeNotifierProvider(create: (_) => AppProvider()),
         ChangeNotifierProvider(create: (_) => OnBoardingProvider()),
       ],

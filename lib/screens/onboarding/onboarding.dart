@@ -44,7 +44,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       Provider.of<OnBoardingProvider>(context, listen: false).index = 0;
     });
     super.initState();

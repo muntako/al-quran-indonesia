@@ -15,13 +15,13 @@ class _MainScreen extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: <Widget>[
-            const AppName(),
-            const Calligraphy(),
-            const QuranRail(),
             Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  const Calligraphy(),
+                  // Space.y1!,
+                  // const AppName(),
                   Space.y1!,
                   AppButton(
                     title: 'Surah Index',

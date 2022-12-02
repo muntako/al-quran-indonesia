@@ -1,44 +1,47 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'ayah.dart';
+part of 'chapterId.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class AyahAdapter extends TypeAdapter<Ayah> {
+class ChapterIdAdapter extends TypeAdapter<ChapterId> {
   @override
-  final int typeId = 0;
+  final int typeId = 4;
 
   @override
-  Ayah read(BinaryReader reader) {
+  ChapterId read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Ayah(
-      number: fields[0] as num?,
-      text: fields[1] as String?,
-      surah: fields[2] as Surah?,
-      numberInSurah: fields[3] as num?,
-      juz: fields[4] as num?,
+    return ChapterId(
+      number: fields[0] as int?,
+      name: fields[1] as String?,
+      englishName: fields[2] as String?,
+      englishNameTranslation: fields[3] as String?,
+      revelationType: fields[4] as String?,
+      ayahs: (fields[5] as List?)?.cast<Ayah?>(),
     );
   }
 
   @override
-  void write(BinaryWriter writer, Ayah obj) {
+  void write(BinaryWriter writer, ChapterId obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.number)
       ..writeByte(1)
-      ..write(obj.text)
+      ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.surah)
+      ..write(obj.englishName)
       ..writeByte(3)
-      ..write(obj.numberInSurah)
+      ..write(obj.englishNameTranslation)
       ..writeByte(4)
-      ..write(obj.juz);
+      ..write(obj.revelationType)
+      ..writeByte(5)
+      ..write(obj.ayahs);
   }
 
   @override
@@ -47,7 +50,7 @@ class AyahAdapter extends TypeAdapter<Ayah> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is AyahAdapter &&
+      other is ChapterIdAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

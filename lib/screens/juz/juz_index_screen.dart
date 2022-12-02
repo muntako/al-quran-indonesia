@@ -2,6 +2,7 @@ import 'package:al_quran/animations/bottom_animation.dart';
 import 'package:al_quran/configs/app.dart';
 import 'package:al_quran/configs/configs.dart';
 import 'package:al_quran/cubits/juz/cubit.dart';
+import 'package:al_quran/cubits/juzId/cubit.dart';
 import 'package:al_quran/providers/app_provider.dart';
 import 'package:al_quran/screens/surah/surah_index_screen.dart';
 import 'package:al_quran/utils/assets.dart';
@@ -33,6 +34,7 @@ class _JuzIndexScreenState extends State<JuzIndexScreen> {
     double width = MediaQuery.of(context).size.width;
 
     final juzCubit = JuzCubit.cubit(context);
+    final juzIdCubit = JuzIdCubit.cubit(context);
 
     bool hasSearched = _searchedIndex != -1 && _searchedJuzName.isNotEmpty;
 
@@ -157,11 +159,13 @@ class _JuzIndexScreenState extends State<JuzIndexScreen> {
                           child: GestureDetector(
                             onTap: () async {
                               await juzCubit.fetch(index + 1);
+                              await juzIdCubit.fetch(index + 1);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (_) => PageScreen(
                                     juz: juzCubit.state.data,
+                                    juzId: juzIdCubit.state.data,
                                   ),
                                 ),
                               );

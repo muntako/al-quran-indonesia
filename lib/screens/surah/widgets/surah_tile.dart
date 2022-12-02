@@ -2,11 +2,8 @@ part of '../surah_index_screen.dart';
 
 class SurahTile extends StatelessWidget {
   final Chapter? chapter;
-
-  const SurahTile({
-    Key? key,
-    this.chapter,
-  }) : super(key: key);
+  final ChapterId? chapterId;
+  const SurahTile({Key? key, this.chapter, this.chapterId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +15,7 @@ class SurahTile extends StatelessWidget {
             MaterialPageRoute(
               builder: (_) => PageScreen(
                 chapter: chapter,
+                chapterId: chapterId,
               ),
             ),
           );

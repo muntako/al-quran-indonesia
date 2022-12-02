@@ -75,7 +75,7 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
                   } else if (state is BookmarkFetchSuccess) {
                     return ListView.separated(
                       separatorBuilder: (context, index) => const Divider(
-                        color: Color(0xffee8f8b),
+                        color: Color(0xff26c6da),
                       ),
                       itemCount: bookmarkCubit.state.data!.length,
                       itemBuilder: (context, index) {

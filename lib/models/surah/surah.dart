@@ -3,12 +3,10 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 
-import 'package:al_quran/models/ayah/ayah.dart';
+part 'surah.g.dart';
 
-part 'chapter.g.dart';
-
-@HiveType(typeId: 1)
-class Chapter {
+@HiveType(typeId: 6)
+class Surah {
   @HiveField(0)
   final int? number;
   @HiveField(1)
@@ -20,49 +18,43 @@ class Chapter {
   @HiveField(4)
   final String? revelationType;
   @HiveField(5)
-  final List<Ayah?>? ayahs;
-  @HiveField(6)
   final int? numberOfAyahs;
-  Chapter({
+  Surah({
     this.number,
     this.name,
     this.englishName,
     this.englishNameTranslation,
     this.revelationType,
-    this.ayahs,
     this.numberOfAyahs,
   });
 
-  Chapter copyWith({
+  Surah copyWith({
     int? number,
     String? name,
     String? englishName,
     String? englishNameTranslation,
     String? revelationType,
-    List<Ayah?>? ayahs,
     int? numberOfAyahs,
   }) {
-    return Chapter(
+    return Surah(
       number: number ?? this.number,
       name: name ?? this.name,
       englishName: englishName ?? this.englishName,
       englishNameTranslation:
           englishNameTranslation ?? this.englishNameTranslation,
       revelationType: revelationType ?? this.revelationType,
-      ayahs: ayahs ?? this.ayahs,
       numberOfAyahs: numberOfAyahs ?? this.numberOfAyahs,
     );
   }
 
-  Chapter merge(Chapter model) {
-    return Chapter(
+  Surah merge(Surah model) {
+    return Surah(
       number: model.number ?? number,
       name: model.name ?? name,
       englishName: model.englishName ?? englishName,
       englishNameTranslation:
           model.englishNameTranslation ?? englishNameTranslation,
       revelationType: model.revelationType ?? revelationType,
-      ayahs: model.ayahs ?? ayahs,
       numberOfAyahs: model.numberOfAyahs ?? numberOfAyahs,
     );
   }
@@ -74,53 +66,40 @@ class Chapter {
       'englishName': englishName,
       'englishNameTranslation': englishNameTranslation,
       'revelationType': revelationType,
-      'ayahs': ayahs?.map((x) => x?.toMap()).toList(),
       'numberOfAyahs': numberOfAyahs,
     };
   }
 
-  factory Chapter.fromMap(Map<String, dynamic> map) {
-    Map<String, dynamic> surah = {
-      'number': map['number'],
-      'name': map['name'],
-      'englishName': map['englishName'],
-      'englishNameTranslation': map['englishNameTranslation'],
-      'revelationType': map['revelationType'],
-      'numberOfAyahs': List.from(map['ayahs']).length,
-    };
-    return Chapter(
+  factory Surah.fromMap(Map<String, dynamic> map) {
+    return Surah(
       number: map['number'],
       name: map['name'],
       englishName: map['englishName'],
       englishNameTranslation: map['englishNameTranslation'],
       revelationType: map['revelationType'],
-      ayahs:
-          List<Ayah>.from(map['ayahs']?.map((x) => Ayah.fromChapter(x, surah))),
-      numberOfAyahs: List.from(map['ayahs']).length,
+      numberOfAyahs: map['numberOfAyahs'],
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Chapter.fromJson(String source) =>
-      Chapter.fromMap(json.decode(source));
+  factory Surah.fromJson(String source) => Surah.fromMap(json.decode(source));
 
   @override
   String toString() {
-    return 'Chapter(number: $number, name: $name, englishName: $englishName, englishNameTranslation: $englishNameTranslation, revelationType: $revelationType, ayahs: $ayahs, numberOfAyahs:$numberOfAyahs)';
+    return 'Surah(number: $number, name: $name, englishName: $englishName, englishNameTranslation: $englishNameTranslation, revelationType: $revelationType, numberOfAyahs: $numberOfAyahs)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is Chapter &&
+    return other is Surah &&
         other.number == number &&
         other.name == name &&
         other.englishName == englishName &&
         other.englishNameTranslation == englishNameTranslation &&
         other.revelationType == revelationType &&
-        listEquals(other.ayahs, ayahs) &&
         other.numberOfAyahs == numberOfAyahs;
   }
 
@@ -131,7 +110,6 @@ class Chapter {
         englishName.hashCode ^
         englishNameTranslation.hashCode ^
         revelationType.hashCode ^
-        ayahs.hashCode ^
         numberOfAyahs.hashCode;
   }
 }

@@ -2,7 +2,9 @@ import 'package:al_quran/animations/bottom_animation.dart';
 import 'package:al_quran/app_routes.dart';
 import 'package:al_quran/configs/configs.dart';
 import 'package:al_quran/cubits/bookmarks/cubit.dart';
+import 'package:al_quran/cubits/chapterId/cubit.dart';
 import 'package:al_quran/cubits/juz/cubit.dart';
+import 'package:al_quran/cubits/juzId/cubit.dart';
 import 'package:al_quran/utils/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void _next() async {
     final appProvider = Provider.of<AppProvider>(context, listen: false);
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       appProvider.initTheme();
     });
 
@@ -32,8 +34,10 @@ class _SplashScreenState extends State<SplashScreen> {
     final bookmarkCubit = BookmarkCubit.cubit(context);
     final chapterCubit = ChapterCubit.cubit(context);
     final juzCubit = JuzCubit.cubit(context);
+    final chapterIdCubit = ChapterIdCubit.cubit(context);
 
     await chapterCubit.fetch();
+    await chapterIdCubit.fetch();
 
     await bookmarkCubit.fetch();
 
@@ -63,6 +67,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     final bookmarkCubit = BookmarkCubit.cubit(context);
     final juzCubit = JuzCubit.cubit(context);
+    final chapterIdCubit = ChapterIdCubit.cubit(context);
 
     final appProvider = Provider.of<AppProvider>(context);
 
@@ -91,6 +96,8 @@ class _SplashScreenState extends State<SplashScreen> {
                     return const Text('Setting up Bookmarks...');
                   } else if (juzCubit.state is JuzFetchLoading) {
                     return const Text('Setting up offline mode...');
+                  } else if (chapterIdCubit.state is ChapterIdFetchLoading) {
+                    return const Text('Setting up transalation...');
                   }
                   return const Text('Initializing data...');
                 },

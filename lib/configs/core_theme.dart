@@ -10,7 +10,7 @@ final themeLight = ThemeData(
   backgroundColor: Colors.white,
   dividerColor: Colors.white60,
   splashColor: Colors.transparent,
-  primaryColor: const Color(0xffee8f8b),
+  primaryColor: const Color(0xff26c6da),
   scaffoldBackgroundColor: Colors.white,
   pageTransitionsTheme: const PageTransitionsTheme(
     builders: {

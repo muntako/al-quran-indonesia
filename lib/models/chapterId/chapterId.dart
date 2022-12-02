@@ -1,14 +1,15 @@
 import 'dart:convert';
 
+import 'package:al_quran/models/chapter/chapter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 
 import 'package:al_quran/models/ayah/ayah.dart';
 
-part 'chapter.g.dart';
+part 'chapterId.g.dart';
 
-@HiveType(typeId: 1)
-class Chapter {
+@HiveType(typeId: 4)
+class ChapterId {
   @HiveField(0)
   final int? number;
   @HiveField(1)
@@ -21,28 +22,24 @@ class Chapter {
   final String? revelationType;
   @HiveField(5)
   final List<Ayah?>? ayahs;
-  @HiveField(6)
-  final int? numberOfAyahs;
-  Chapter({
+  ChapterId({
     this.number,
     this.name,
     this.englishName,
     this.englishNameTranslation,
     this.revelationType,
     this.ayahs,
-    this.numberOfAyahs,
   });
 
-  Chapter copyWith({
+  ChapterId copyWith({
     int? number,
     String? name,
     String? englishName,
     String? englishNameTranslation,
     String? revelationType,
     List<Ayah?>? ayahs,
-    int? numberOfAyahs,
   }) {
-    return Chapter(
+    return ChapterId(
       number: number ?? this.number,
       name: name ?? this.name,
       englishName: englishName ?? this.englishName,
@@ -50,12 +47,15 @@ class Chapter {
           englishNameTranslation ?? this.englishNameTranslation,
       revelationType: revelationType ?? this.revelationType,
       ayahs: ayahs ?? this.ayahs,
-      numberOfAyahs: numberOfAyahs ?? this.numberOfAyahs,
     );
   }
 
-  Chapter merge(Chapter model) {
-    return Chapter(
+  factory ChapterId.fromChapterNumber(List<ChapterId> chapters, int index) {
+    return chapters.where((element) => element.number == index).toList()[0];
+  }
+
+  ChapterId merge(ChapterId model) {
+    return ChapterId(
       number: model.number ?? number,
       name: model.name ?? name,
       englishName: model.englishName ?? englishName,
@@ -63,7 +63,6 @@ class Chapter {
           model.englishNameTranslation ?? englishNameTranslation,
       revelationType: model.revelationType ?? revelationType,
       ayahs: model.ayahs ?? ayahs,
-      numberOfAyahs: model.numberOfAyahs ?? numberOfAyahs,
     );
   }
 
@@ -75,11 +74,10 @@ class Chapter {
       'englishNameTranslation': englishNameTranslation,
       'revelationType': revelationType,
       'ayahs': ayahs?.map((x) => x?.toMap()).toList(),
-      'numberOfAyahs': numberOfAyahs,
     };
   }
 
-  factory Chapter.fromMap(Map<String, dynamic> map) {
+  factory ChapterId.fromMap(Map<String, dynamic> map) {
     Map<String, dynamic> surah = {
       'number': map['number'],
       'name': map['name'],
@@ -88,7 +86,7 @@ class Chapter {
       'revelationType': map['revelationType'],
       'numberOfAyahs': List.from(map['ayahs']).length,
     };
-    return Chapter(
+    return ChapterId(
       number: map['number'],
       name: map['name'],
       englishName: map['englishName'],
@@ -96,32 +94,30 @@ class Chapter {
       revelationType: map['revelationType'],
       ayahs:
           List<Ayah>.from(map['ayahs']?.map((x) => Ayah.fromChapter(x, surah))),
-      numberOfAyahs: List.from(map['ayahs']).length,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Chapter.fromJson(String source) =>
-      Chapter.fromMap(json.decode(source));
+  factory ChapterId.fromJson(String source) =>
+      ChapterId.fromMap(json.decode(source));
 
   @override
   String toString() {
-    return 'Chapter(number: $number, name: $name, englishName: $englishName, englishNameTranslation: $englishNameTranslation, revelationType: $revelationType, ayahs: $ayahs, numberOfAyahs:$numberOfAyahs)';
+    return 'ChapterId(number: $number, name: $name, englishName: $englishName, englishNameTranslation: $englishNameTranslation, revelationType: $revelationType, ayahs: $ayahs)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is Chapter &&
+    return other is ChapterId &&
         other.number == number &&
         other.name == name &&
         other.englishName == englishName &&
         other.englishNameTranslation == englishNameTranslation &&
         other.revelationType == revelationType &&
-        listEquals(other.ayahs, ayahs) &&
-        other.numberOfAyahs == numberOfAyahs;
+        listEquals(other.ayahs, ayahs);
   }
 
   @override
@@ -131,7 +127,6 @@ class Chapter {
         englishName.hashCode ^
         englishNameTranslation.hashCode ^
         revelationType.hashCode ^
-        ayahs.hashCode ^
-        numberOfAyahs.hashCode;
+        ayahs.hashCode;
   }
 }

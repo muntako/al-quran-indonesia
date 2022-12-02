@@ -1,28 +1,28 @@
 part of 'cubit.dart';
 
-class ChapterDataProvider {
+class ChapterIdDataProvider {
   static final cache = Hive.box('data');
 
   static Dio ins = Dio();
 
-  static Future<List<Chapter?>?> chapterApi() async {
+  static Future<List<ChapterId?>?> chapterIdApi() async {
     try {
       final resp = await ins.get(
-        'http://api.alquran.cloud/v1/quran/quran-uthmani',
+        'http://api.alquran.cloud/v1/quran/id.indonesian',
       );
       final Map<String, dynamic> raw = resp.data['data'];
 
       final List data = raw['surahs'];
-      final List<Chapter> chapters = List.generate(
+      final List<ChapterId> chapterIds = List.generate(
         data.length,
-        (index) => Chapter.fromMap(data[index]),
+        (index) => ChapterId.fromMap(data[index]),
       );
       await cache.put(
-        'chapters',
-        chapters,
+        'chapterIds',
+        chapterIds,
       );
 
-      return chapters;
+      return chapterIds;
     } on DioError catch (e) {
       if (e.type == DioErrorType.other) {
         throw Exception('Problem with internet connection');
@@ -34,15 +34,15 @@ class ChapterDataProvider {
     }
   }
 
-  static Future<List<Chapter?>?> chapterHive() async {
+  static Future<List<ChapterId?>?> chapterIdHive() async {
     try {
-      final chapter = await cache.get('chapters');
+      final chapterId = await cache.get('chapterIds');
 
-      if (chapter == null) return null;
+      if (chapterId == null) return null;
 
-      final List<Chapter?>? chapters = List.from(chapter);
+      final List<ChapterId?>? chapterIds = List.from(chapterId);
 
-      return chapters;
+      return chapterIds;
     } catch (e) {
       throw Exception("Internal Server Error");
     }

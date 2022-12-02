@@ -7,15 +7,9 @@ class Calligraphy extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-    return Positioned(
-      right: width * 0.01,
-      top: height * 0.045,
-      child: Image.asset(
-        StaticAssets.gradLogo,
-        height: AppDimensions.normalize(75),
-      ),
+    return Image.asset(
+      StaticAssets.gradLogo,
+      height: AppDimensions.normalize(75),
     );
   }
 }

@@ -3,8 +3,12 @@ import 'package:al_quran/configs/app.dart';
 import 'package:al_quran/configs/configs.dart';
 import 'package:al_quran/cubits/bookmarks/cubit.dart';
 import 'package:al_quran/cubits/chapter/cubit.dart';
+import 'package:al_quran/cubits/chapterId/cubit.dart';
+import 'package:al_quran/models/ayah/ayah.dart';
 import 'package:al_quran/models/chapter/chapter.dart';
+import 'package:al_quran/models/chapterId/chapterId.dart';
 import 'package:al_quran/models/juz/juz.dart';
+import 'package:al_quran/models/juzId/juzId.dart';
 import 'package:al_quran/providers/app_provider.dart';
 import 'package:al_quran/utils/assets.dart';
 import 'package:al_quran/utils/juz.dart';
@@ -15,12 +19,14 @@ import 'package:al_quran/widgets/flare.dart';
 import 'package:al_quran/widgets/app/title.dart';
 import 'package:al_quran/widgets/button/app_back_button.dart';
 import 'package:al_quran/widgets/custom_image.dart';
+import 'package:arabic_numbers/arabic_numbers.dart';
 
 part '../page/page_screen.dart';
 
 part 'widgets/surah_tile.dart';
 part 'widgets/surah_app_bar.dart';
 part 'widgets/surah_information.dart';
+part 'widgets/ayah_information.dart';
 
 class SurahIndexScreen extends StatefulWidget {
   const SurahIndexScreen({Key? key}) : super(key: key);
@@ -31,12 +37,15 @@ class SurahIndexScreen extends StatefulWidget {
 
 class _SurahIndexScreenState extends State<SurahIndexScreen> {
   List<Chapter?>? chapters = [];
+  List<ChapterId?>? chapterIds = [];
   List<Chapter?>? searchedChapters = [];
 
   @override
   void initState() {
     final chapterCubit = ChapterCubit.cubit(context);
     chapters = chapterCubit.state.data;
+    final chapterIdCubit = ChapterIdCubit.cubit(context);
+    chapterIds = chapterIdCubit.state.data;
     super.initState();
   }
 
@@ -46,6 +55,7 @@ class _SurahIndexScreenState extends State<SurahIndexScreen> {
 
     final appProvider = Provider.of<AppProvider>(context);
     final chapterCubit = ChapterCubit.cubit(context);
+    final chapterIdCubit = ChapterIdCubit.cubit(context);
 
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
@@ -100,7 +110,8 @@ class _SurahIndexScreenState extends State<SurahIndexScreen> {
                                 ),
                               ),
                               onPressed: () {
-                                chapterCubit.fetch(api: true);
+                                chapterCubit.fetch();
+                                chapterIdCubit.fetch();
                               },
                               child: const Text('Retry'),
                             ),
@@ -181,25 +192,32 @@ class _SurahIndexScreenState extends State<SurahIndexScreen> {
                   child: searchedChapters!.isNotEmpty
                       ? ListView.separated(
                           separatorBuilder: (context, index) => const Divider(
-                            color: Color(0xffee8f8b),
+                            color: Color(0xff26c6da),
                           ),
                           itemCount: searchedChapters!.length,
                           itemBuilder: (context, index) {
                             final chapter = searchedChapters![index];
+                            final chapterId = chapterIds!
+                                .where((chapterId) =>
+                                    chapterId!.number == chapter!.number)
+                                .toList()[0];
                             return SurahTile(
                               chapter: chapter,
+                              chapterId: chapterId,
                             );
                           },
                         )
                       : ListView.separated(
                           separatorBuilder: (context, index) => const Divider(
-                            color: Color(0xffee8f8b),
+                            color: Color(0xff26c6da),
                           ),
                           itemCount: chapters!.length,
                           itemBuilder: (context, index) {
                             final chapter = chapters![index];
+                            final chapterId = chapterIds![index];
                             return SurahTile(
                               chapter: chapter,
+                              chapterId: chapterId,
                             );
                           },
                         ),
