@@ -1,7 +1,7 @@
 name: al_quran
 description: Flutter App for the holy book of Qur'an.
 
-version: 2.5.2+9
+version: 1.0.0+1
 
 environment:
   sdk: ">=2.15.0 <3.0.0"
@@ -41,6 +41,9 @@ dependencies:
   # app info
   package_info_plus: ^1.4.2
   arabic_numbers: ^1.0.0
+  flutter_html: ^2.2.1
+  settings_ui: ^2.0.2
+  scrollable_positioned_list: ^0.2.3
 
 dev_dependencies:
   flutter_test:
@@ -52,6 +55,8 @@ dev_dependencies:
 
   # launcher icons
   flutter_launcher_icons: "^0.10.0"
+
+  change_app_package_name: ^1.1.0
 
 flutter_icons:
   android: "launcher_icon"
@@ -68,7 +73,6 @@ flutter:
   assets:
     - assets/
     - assets/logos/
-    - assets/intro/
     - assets/images/
 
   fonts:
@@ -89,3 +93,12 @@ flutter:
     - family: Noor
       fonts:
         - asset: fonts/noor-regular.ttf
+    - family: Kitab
+      fonts:
+        - asset: fonts/Kitab-regular.ttf
+    - family: Alqalam
+      fonts:
+        - asset: fonts/Alqalam-regular.ttf
+    - family: Uthmanic
+      fonts:
+        - asset: fonts/Uthmanic-regular.otf

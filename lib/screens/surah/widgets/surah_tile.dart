@@ -1,12 +1,14 @@
 part of '../surah_index_screen.dart';
 
 class SurahTile extends StatelessWidget {
-  final Chapter? chapter;
+  final Surah? surah;
   final ChapterId? chapterId;
-  const SurahTile({Key? key, this.chapter, this.chapterId}) : super(key: key);
+  const SurahTile({Key? key, this.surah, this.chapterId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    ChapterCubit chapterCubit = ChapterCubit.cubit(context);
+    List<Chapter?>? chapters = chapterCubit.state.data;
     return WidgetAnimator(
       child: InkWell(
         onTap: () {
@@ -14,7 +16,10 @@ class SurahTile extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (_) => PageScreen(
-                chapter: chapter,
+                chapter: chapters!
+                    .where((chapter) => chapter?.number == surah!.nomor)
+                    .toList()[0],
+                surah: surah,
                 chapterId: chapterId,
               ),
             ),
@@ -23,35 +28,38 @@ class SurahTile extends StatelessWidget {
         onLongPress: () => showDialog(
           context: context,
           builder: (context) => _SurahInformation(
-            chapterData: chapter,
+            chapterData: surah,
           ),
         ),
         child: Padding(
-          padding: Space.all(1),
+          padding: Space.all(1, 0.2),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(chapter!.number!.toString()),
+              Text(surah!.nomor!.toString()),
               Space.x1!,
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    chapter!.englishName!,
+                    surah!.namaLatin!,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
-                    chapter!.englishNameTranslation!,
+                    surah!.arti!,
                     style: AppText.b2,
                   )
                 ],
               ),
               Expanded(
                 child: Text(
-                  chapter!.name!,
-                  style: AppText.b1b,
+                  surah!.nama!,
+                  style: const TextStyle(
+                    fontFamily: "Noor",
+                    fontSize: 25.0,
+                  ),
                   textAlign: TextAlign.right,
                 ),
               ),

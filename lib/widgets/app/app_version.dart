@@ -34,13 +34,13 @@ class _AppVersionState extends State<AppVersion> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Text(
-            "The Holy Qur'an",
+            "Al Qur'an Indonesia",
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: MediaQuery.of(context).size.height * 0.018),
           ),
           Text(
-            "Version: $_version\n",
+            "Versi: $_version\n",
             style:
                 TextStyle(fontSize: MediaQuery.of(context).size.height * 0.015),
           )

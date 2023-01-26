@@ -1,15 +1,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.hmz.al_quran">
+    package="com.madani.quran">
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:name="${applicationName}"
-        android:label="The Holy Qur'an"
+        android:label="Al Qur'an Indonesia"
         android:icon="@mipmap/launcher_icon">
               <uses-library
         android:name="org.apache.http.legacy"
         android:required="false" />
         <activity
             android:name=".MainActivity"
+            android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"

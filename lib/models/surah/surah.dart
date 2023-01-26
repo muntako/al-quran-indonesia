@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
+import 'package:al_quran/cubits/surat/cubit.dart';
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 part 'surah.g.dart';
@@ -8,77 +9,97 @@ part 'surah.g.dart';
 @HiveType(typeId: 6)
 class Surah {
   @HiveField(0)
-  final int? number;
+  final int? nomor;
   @HiveField(1)
-  final String? name;
+  final String? nama;
   @HiveField(2)
-  final String? englishName;
+  final String? namaLatin;
   @HiveField(3)
-  final String? englishNameTranslation;
+  final int? jumlahAyat;
   @HiveField(4)
-  final String? revelationType;
+  final String? tempatTurun;
   @HiveField(5)
-  final int? numberOfAyahs;
-  Surah({
-    this.number,
-    this.name,
-    this.englishName,
-    this.englishNameTranslation,
-    this.revelationType,
-    this.numberOfAyahs,
-  });
+  final String? arti;
+  @HiveField(6)
+  final String? deskripsi;
+  @HiveField(7)
+  final String? audio;
+  Surah(
+    this.nomor,
+    this.nama,
+    this.namaLatin,
+    this.jumlahAyat,
+    this.tempatTurun,
+    this.arti,
+    this.deskripsi,
+    this.audio,
+  );
 
   Surah copyWith({
-    int? number,
-    String? name,
-    String? englishName,
-    String? englishNameTranslation,
-    String? revelationType,
-    int? numberOfAyahs,
+    int? nomor,
+    String? nama,
+    String? namaLatin,
+    int? jumlahAyat,
+    String? tempatTurun,
+    String? arti,
+    String? deskripsi,
+    String? audio,
   }) {
     return Surah(
-      number: number ?? this.number,
-      name: name ?? this.name,
-      englishName: englishName ?? this.englishName,
-      englishNameTranslation:
-          englishNameTranslation ?? this.englishNameTranslation,
-      revelationType: revelationType ?? this.revelationType,
-      numberOfAyahs: numberOfAyahs ?? this.numberOfAyahs,
+      nomor ?? this.nomor,
+      nama,
+      namaLatin,
+      jumlahAyat,
+      tempatTurun,
+      arti,
+      deskripsi,
+      audio,
     );
   }
 
   Surah merge(Surah model) {
     return Surah(
-      number: model.number ?? number,
-      name: model.name ?? name,
-      englishName: model.englishName ?? englishName,
-      englishNameTranslation:
-          model.englishNameTranslation ?? englishNameTranslation,
-      revelationType: model.revelationType ?? revelationType,
-      numberOfAyahs: model.numberOfAyahs ?? numberOfAyahs,
+      model.nomor,
+      model.nama,
+      model.namaLatin,
+      model.jumlahAyat,
+      model.tempatTurun,
+      model.arti,
+      model.deskripsi,
+      model.audio,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'number': number,
-      'name': name,
-      'englishName': englishName,
-      'englishNameTranslation': englishNameTranslation,
-      'revelationType': revelationType,
-      'numberOfAyahs': numberOfAyahs,
+      'nomor': nomor,
+      'nama': nama,
+      'namaLatin': namaLatin,
+      'jumlahAyat': jumlahAyat,
+      'tempatTurun': tempatTurun,
+      'arti': arti,
+      'deskripsi': deskripsi,
+      'audio': audio,
     };
   }
 
   factory Surah.fromMap(Map<String, dynamic> map) {
     return Surah(
-      number: map['number'],
-      name: map['name'],
-      englishName: map['englishName'],
-      englishNameTranslation: map['englishNameTranslation'],
-      revelationType: map['revelationType'],
-      numberOfAyahs: map['numberOfAyahs'],
+      map['nomor'],
+      map['nama'],
+      map['nama_latin'],
+      map['jumlah_ayat'],
+      map['tempat_turun'],
+      map['arti'],
+      map['deskripsi'],
+      map['audio'],
     );
+  }
+
+  static Surah? fromNumber(BuildContext context, num index) {
+    final surahCubit = SurahCubit.cubit(context);
+    final surah = surahCubit.state.data![index.hashCode - 1];
+    return surah;
   }
 
   String toJson() => json.encode(toMap());
@@ -87,7 +108,7 @@ class Surah {
 
   @override
   String toString() {
-    return 'Surah(number: $number, name: $name, englishName: $englishName, englishNameTranslation: $englishNameTranslation, revelationType: $revelationType, numberOfAyahs: $numberOfAyahs)';
+    return 'Surah(nomor: $nomor, nama: $nama, namaLatin: $namaLatin, jumlahAyat: $jumlahAyat, tempatTurun: $tempatTurun, arti: $arti, deskripsiL: $deskripsi, audio:$audio)';
   }
 
   @override
@@ -95,21 +116,25 @@ class Surah {
     if (identical(this, other)) return true;
 
     return other is Surah &&
-        other.number == number &&
-        other.name == name &&
-        other.englishName == englishName &&
-        other.englishNameTranslation == englishNameTranslation &&
-        other.revelationType == revelationType &&
-        other.numberOfAyahs == numberOfAyahs;
+        other.nomor == nomor &&
+        other.nama == nama &&
+        other.namaLatin == namaLatin &&
+        other.jumlahAyat == jumlahAyat &&
+        other.tempatTurun == tempatTurun &&
+        other.arti == arti &&
+        other.deskripsi == deskripsi &&
+        other.audio == audio;
   }
 
   @override
   int get hashCode {
-    return number.hashCode ^
-        name.hashCode ^
-        englishName.hashCode ^
-        englishNameTranslation.hashCode ^
-        revelationType.hashCode ^
-        numberOfAyahs.hashCode;
+    return nomor.hashCode ^
+        deskripsi.hashCode ^
+        namaLatin.hashCode ^
+        jumlahAyat.hashCode ^
+        tempatTurun.hashCode ^
+        arti.hashCode ^
+        deskripsi.hashCode ^
+        audio.hashCode;
   }
 }

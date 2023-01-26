@@ -5,12 +5,10 @@ import 'package:al_quran/cubits/juz/cubit.dart';
 import 'package:al_quran/cubits/juzId/cubit.dart';
 import 'package:al_quran/providers/app_provider.dart';
 import 'package:al_quran/screens/surah/surah_index_screen.dart';
-import 'package:al_quran/utils/assets.dart';
 import 'package:al_quran/utils/juz.dart';
-import 'package:al_quran/widgets/button/app_back_button.dart';
-import 'package:al_quran/widgets/custom_image.dart';
+import 'package:al_quran/widgets/app/app_bar.dart';
 import 'package:al_quran/widgets/flare.dart';
-import 'package:al_quran/widgets/app/title.dart';
+import 'package:al_quran/widgets/form_input_range.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -47,12 +45,15 @@ class _JuzIndexScreenState extends State<JuzIndexScreen> {
             Container(
               height: AppDimensions.normalize(20),
               margin: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height * 0.2,
+                top: MediaQuery.of(context).size.height * 0.07,
                 left: AppDimensions.normalize(5),
                 right: AppDimensions.normalize(5),
               ),
               child: TextFormField(
                 keyboardType: TextInputType.number,
+                inputFormatters: [
+                  NumericalRangeFormatter(min: 1, max: 30),
+                ],
                 onChanged: (value) {
                   if (value.isEmpty) {
                     setState(() {
@@ -75,7 +76,7 @@ class _JuzIndexScreenState extends State<JuzIndexScreen> {
                 },
                 decoration: InputDecoration(
                   contentPadding: Space.h,
-                  hintText: 'Search Juz Number here...',
+                  hintText: 'Cari Juz...',
                   hintStyle: AppText.b2!.copyWith(
                     color: AppTheme.c!.textSub2,
                   ),
@@ -101,7 +102,7 @@ class _JuzIndexScreenState extends State<JuzIndexScreen> {
             Container(
               padding: const EdgeInsets.all(8.0),
               margin: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height * 0.28,
+                top: MediaQuery.of(context).size.height * 0.15,
               ),
               child: hasSearched
                   ? GestureDetector(
@@ -109,11 +110,16 @@ class _JuzIndexScreenState extends State<JuzIndexScreen> {
                         await juzCubit.fetch(
                           JuzUtils.juzNames.indexOf(_searchedJuzName) + 1,
                         );
+
+                        await juzIdCubit.fetch(
+                          JuzUtils.juzNames.indexOf(_searchedJuzName) + 1,
+                        );
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (_) => PageScreen(
                               juz: juzCubit.state.data,
+                              juzId: juzIdCubit.state.data,
                             ),
                           ),
                         );
@@ -211,14 +217,8 @@ class _JuzIndexScreenState extends State<JuzIndexScreen> {
                       },
                     ),
             ),
-            const AppBackButton(),
-            CustomImage(
-              opacity: 0.3,
-              height: AppDimensions.normalize(60),
-              imagePath: StaticAssets.quranRail,
-            ),
-            const CustomTitle(
-              title: "Juzz Index",
+            const CustomAppBar(
+              title: 'Juz',
             ),
             if (appProvider.isDark) ...[
               Flare(

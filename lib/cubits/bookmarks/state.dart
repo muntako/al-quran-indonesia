@@ -2,21 +2,21 @@ part of 'cubit.dart';
 
 @immutable
 class BookmarkState extends Equatable {
-  final List<Chapter?>? data;
-  final bool? isBookmarked;
+  final List<Bookmark?>? data;
+  final bool? isLastRead;
   final String? message;
 
   const BookmarkState({
     this.data,
     this.message,
-    this.isBookmarked = false,
+    this.isLastRead = false,
   });
 
   @override
   List<Object?> get props => [
         data,
         message,
-        isBookmarked,
+        isLastRead,
       ];
 }
 
@@ -30,10 +30,10 @@ class BookmarkFetchLoading extends BookmarkState {
 
 @immutable
 class BookmarkFetchSuccess extends BookmarkState {
-  const BookmarkFetchSuccess({List<Chapter?>? data, bool? isBookmarked})
+  const BookmarkFetchSuccess({List<Bookmark?>? data, bool? isLastRead})
       : super(
           data: data,
-          isBookmarked: isBookmarked,
+          isLastRead: isLastRead,
         );
 }
 

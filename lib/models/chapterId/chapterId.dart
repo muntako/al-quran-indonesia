@@ -1,7 +1,8 @@
 import 'dart:convert';
 
-import 'package:al_quran/models/chapter/chapter.dart';
+import 'package:al_quran/cubits/chapterId/cubit.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 
 import 'package:al_quran/models/ayah/ayah.dart';
@@ -78,23 +79,20 @@ class ChapterId {
   }
 
   factory ChapterId.fromMap(Map<String, dynamic> map) {
-    Map<String, dynamic> surah = {
-      'number': map['number'],
-      'name': map['name'],
-      'englishName': map['englishName'],
-      'englishNameTranslation': map['englishNameTranslation'],
-      'revelationType': map['revelationType'],
-      'numberOfAyahs': List.from(map['ayahs']).length,
-    };
     return ChapterId(
       number: map['number'],
       name: map['name'],
       englishName: map['englishName'],
       englishNameTranslation: map['englishNameTranslation'],
       revelationType: map['revelationType'],
-      ayahs:
-          List<Ayah>.from(map['ayahs']?.map((x) => Ayah.fromChapter(x, surah))),
+      ayahs: List<Ayah>.from(
+          map['ayahs']?.map((x) => Ayah.fromChapter(x, map['number']))),
     );
+  }
+  static Future<ChapterId?> fromIndex(BuildContext context, int index) async {
+    ChapterIdCubit chapterCubit = ChapterIdCubit.cubit(context);
+    final chapter = chapterCubit.state.data![index];
+    return chapter;
   }
 
   String toJson() => json.encode(toMap());

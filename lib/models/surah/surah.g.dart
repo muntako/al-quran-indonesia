@@ -17,31 +17,37 @@ class SurahAdapter extends TypeAdapter<Surah> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Surah(
-      number: fields[0] as int?,
-      name: fields[1] as String?,
-      englishName: fields[2] as String?,
-      englishNameTranslation: fields[3] as String?,
-      revelationType: fields[4] as String?,
-      numberOfAyahs: fields[5] as int?,
+      fields[0] as int?,
+      fields[1] as String?,
+      fields[2] as String?,
+      fields[3] as int?,
+      fields[4] as String?,
+      fields[5] as String?,
+      fields[6] as String?,
+      fields[7] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Surah obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(8)
       ..writeByte(0)
-      ..write(obj.number)
+      ..write(obj.nomor)
       ..writeByte(1)
-      ..write(obj.name)
+      ..write(obj.nama)
       ..writeByte(2)
-      ..write(obj.englishName)
+      ..write(obj.namaLatin)
       ..writeByte(3)
-      ..write(obj.englishNameTranslation)
+      ..write(obj.jumlahAyat)
       ..writeByte(4)
-      ..write(obj.revelationType)
+      ..write(obj.tempatTurun)
       ..writeByte(5)
-      ..write(obj.numberOfAyahs);
+      ..write(obj.arti)
+      ..writeByte(6)
+      ..write(obj.deskripsi)
+      ..writeByte(7)
+      ..write(obj.audio);
   }
 
   @override

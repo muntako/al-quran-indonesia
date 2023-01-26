@@ -4,32 +4,32 @@ import 'package:flutter/material.dart';
 class DrawerUtils {
   static const List items = [
     {
-      'title': 'Surah Index',
+      'title': 'Surat',
       'icon': Icons.format_list_numbered_outlined,
       'route': AppRoutes.surah,
     },
     {
-      'title': 'Juz Index',
+      'title': 'Juz',
       'icon': Icons.list,
       'route': AppRoutes.juz,
     },
     {
-      'title': 'Bookmarks',
+      'title': 'Bookmark',
       'icon': Icons.bookmark_outline,
       'route': AppRoutes.bookmarks,
     },
     {
-      'title': 'Help Guide',
+      'title': 'Bantuan',
       'icon': Icons.help_outline,
       'route': AppRoutes.helpGuide,
     },
     {
-      'title': 'Introduction',
-      'icon': Icons.info_outline,
-      'route': AppRoutes.onboarding,
+      'title': 'Pengaturan',
+      'icon': Icons.settings,
+      'route': AppRoutes.setting,
     },
     {
-      'title': 'Share App',
+      'title': 'Bagikan Aplikasi',
       'icon': Icons.share_outlined,
       'route': AppRoutes.shareApp,
     },

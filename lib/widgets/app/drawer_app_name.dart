@@ -1,4 +1,3 @@
-import 'package:al_quran/configs/app_theme.dart';
 import 'package:al_quran/utils/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,23 +18,8 @@ class DrawerAppName extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Transform.scale(
-              scale: 1.2,
-              child: Switch(
-                activeColor: Colors.white,
-                value: appProvider.isDark,
-                activeTrackColor: AppTheme.c!.accent,
-                onChanged: (value) {
-                  if (value) {
-                    appProvider.setTheme(ThemeMode.dark);
-                  } else {
-                    appProvider.setTheme(ThemeMode.light);
-                  }
-                },
-              ),
-            ),
             Text(
-              "\nThe",
+              "\nAl Qur'an",
               style: TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: height * 0.025,
@@ -43,7 +27,7 @@ class DrawerAppName extends StatelessWidget {
               ),
             ),
             Text(
-              "Holy\nQur'an",
+              "Indonesia",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: appProvider.isDark ? Colors.grey[200] : Colors.black54,

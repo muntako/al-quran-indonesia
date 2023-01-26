@@ -2,7 +2,6 @@ import 'package:al_quran/app_routes.dart';
 import 'package:al_quran/configs/app.dart';
 import 'package:al_quran/configs/configs.dart';
 import 'package:al_quran/providers/onboarding_provider.dart';
-import 'package:al_quran/utils/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,28 +18,7 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
 
-  List<Widget> pages = [
-    const _OnBoardingPage(
-      image: StaticAssets.gradLogo,
-      text:
-          "The Holy Qur'an\n\n\"Indeed, It is We who sent down the Qur'an and indeed, We will be its Guardian\"\n",
-    ),
-    const _OnBoardingPage(
-      image: StaticAssets.ui,
-      text:
-          "With sleek & awesome User Interface to keep you in love with this amazing app and the Book.\n\nHope you will like our efforts!\n",
-    ),
-    const _OnBoardingPage(
-      image: StaticAssets.easyNav,
-      text:
-          "Now with Surah & Juz Index you can find your required Surahs & Juzs easily.\n\nWith Bookmark option you can access your daily readings.\n",
-    ),
-    const _OnBoardingPage(
-      image: StaticAssets.drawer3d,
-      text:
-          "For the first time ever, we introduced a very unique experience for our users with 3D Drawer.\n\nCan't wait for your reviews :)\n",
-    ),
-  ];
+  List<Widget> pages = [];
 
   @override
   void initState() {

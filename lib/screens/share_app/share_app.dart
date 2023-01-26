@@ -2,9 +2,8 @@ import 'package:al_quran/configs/app.dart';
 import 'package:al_quran/configs/app_theme.dart';
 import 'package:al_quran/providers/app_provider.dart';
 import 'package:al_quran/utils/assets.dart';
+import 'package:al_quran/widgets/app/app_bar.dart';
 import 'package:al_quran/widgets/app/app_version.dart';
-import 'package:al_quran/widgets/button/app_back_button.dart';
-import 'package:al_quran/widgets/app/title.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -23,8 +22,9 @@ class ShareAppScreen extends StatelessWidget {
       body: SafeArea(
         child: Stack(
           children: const <Widget>[
-            AppBackButton(),
-            CustomTitle(title: 'Share App'),
+            // AppBackButton(),
+            // CustomTitle(title: 'Bagikan Aplikasi'),
+            CustomAppBar(title: 'Bagikan Aplikasi'),
             ShareInfo()
           ],
         ),
@@ -40,8 +40,8 @@ class ShareInfo extends StatelessWidget {
     final RenderBox box = context.findRenderObject() as RenderBox;
 
     Share.share(
-        "Download the latest no-Ads Holy Qur'an App on Play store\n\n"
-        "https://play.google.com/store/apps/details?id=com.hmz.al_quran \n\nShare More! It is Sadaq-e-Jaria :)",
+        "Download Al Quran Indonesia\n\n"
+        "https://play.google.com/store/apps/details?id=com.madani.quran",
         sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
   }
 
@@ -57,27 +57,26 @@ class ShareInfo extends StatelessWidget {
           SizedBox(height: height * 0.13),
           Image.asset(StaticAssets.gradLogo, height: height * 0.2),
           SizedBox(height: height * 0.02),
-          Text(
-              "The Holy Qur'an App is also available as Open Source on GitHub!",
+          Text("Aplikasi Open Source tersedia di GitHub!",
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.caption),
           SizedBox(height: height * 0.05),
           _ShareCustomButton(
             iconData: Icons.share,
-            text: 'Share App',
+            text: 'Bagikan Aplikasi',
             onPressed: () => share(context),
           ),
           _ShareCustomButton(
             iconData: ShareIcon.github,
             text: 'GitHub Repo',
             onPressed: () =>
-                launch("https://github.com/mhmzdev/The_Holy_Quran_App"),
+                launch("https://github.com/muntako/al-quran-indonesia"),
           ),
           _ShareCustomButton(
             iconData: ShareIcon.googlePlay,
-            text: 'Rate & Feedback',
+            text: 'Rating & Ulasan',
             onPressed: () => launch(
-                "https://play.google.com/store/apps/details?id=com.hmz.al_quran"),
+                "https://play.google.com/store/apps/details?id=com.madani.quran"),
           ),
           SizedBox(height: height * 0.02),
           const AppVersion()

@@ -8,7 +8,7 @@ class CustomTitle extends StatelessWidget {
   const CustomTitle({Key? key, this.title}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
+    // double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
     return Positioned(

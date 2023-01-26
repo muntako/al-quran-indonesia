@@ -1,32 +1,36 @@
 import 'package:al_quran/animations/bottom_animation.dart';
+import 'package:al_quran/app_routes.dart';
 import 'package:al_quran/configs/app.dart';
 import 'package:al_quran/configs/configs.dart';
 import 'package:al_quran/cubits/bookmarks/cubit.dart';
 import 'package:al_quran/cubits/chapter/cubit.dart';
 import 'package:al_quran/cubits/chapterId/cubit.dart';
+import 'package:al_quran/cubits/surat/cubit.dart';
 import 'package:al_quran/models/ayah/ayah.dart';
+import 'package:al_quran/models/bookmark/bookmark.dart';
 import 'package:al_quran/models/chapter/chapter.dart';
 import 'package:al_quran/models/chapterId/chapterId.dart';
 import 'package:al_quran/models/juz/juz.dart';
 import 'package:al_quran/models/juzId/juzId.dart';
+import 'package:al_quran/models/surah/surah.dart';
 import 'package:al_quran/providers/app_provider.dart';
 import 'package:al_quran/utils/assets.dart';
-import 'package:al_quran/utils/juz.dart';
+import 'package:al_quran/widgets/app/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:al_quran/widgets/flare.dart';
-import 'package:al_quran/widgets/app/title.dart';
-import 'package:al_quran/widgets/button/app_back_button.dart';
-import 'package:al_quran/widgets/custom_image.dart';
 import 'package:arabic_numbers/arabic_numbers.dart';
-
+import 'package:flutter_html/flutter_html.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import '../../widgets/form_input_range.dart';
 part '../page/page_screen.dart';
 
 part 'widgets/surah_tile.dart';
 part 'widgets/surah_app_bar.dart';
 part 'widgets/surah_information.dart';
 part 'widgets/ayah_information.dart';
+part 'widgets/surah_goto.dart';
 
 class SurahIndexScreen extends StatefulWidget {
   const SurahIndexScreen({Key? key}) : super(key: key);
@@ -38,10 +42,14 @@ class SurahIndexScreen extends StatefulWidget {
 class _SurahIndexScreenState extends State<SurahIndexScreen> {
   List<Chapter?>? chapters = [];
   List<ChapterId?>? chapterIds = [];
-  List<Chapter?>? searchedChapters = [];
+  List<Surah?>? searchedChapters = [];
+  List<Surah?>? surahs = [];
 
   @override
   void initState() {
+    final surahCubit = SurahCubit.cubit(context);
+    surahs = surahCubit.state.data;
+
     final chapterCubit = ChapterCubit.cubit(context);
     chapters = chapterCubit.state.data;
     final chapterIdCubit = ChapterIdCubit.cubit(context);
@@ -67,15 +75,16 @@ class _SurahIndexScreenState extends State<SurahIndexScreen> {
         body: SafeArea(
           child: Stack(
             children: <Widget>[
-              CustomImage(
-                opacity: 0.3,
-                height: height * 0.17,
-                imagePath: StaticAssets.kaba,
-              ),
-              const AppBackButton(),
-              const CustomTitle(
-                title: 'Surah Index',
-              ),
+              // CustomImage(
+              //   opacity: 0.3,
+              //   height: height * 0.17,
+              //   imagePath: StaticAssets.kaba,
+              // ),
+              // const AppBackButton(),
+              // const CustomTitle(
+              //   title: 'Surah Index',
+              // ),
+              const CustomAppBar(title: 'Surat'),
               if (chapters!.isEmpty)
                 Center(
                   child: BlocBuilder<ChapterCubit, ChapterState>(
@@ -125,7 +134,7 @@ class _SurahIndexScreenState extends State<SurahIndexScreen> {
                 Container(
                   height: AppDimensions.normalize(20),
                   margin: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.2,
+                    top: MediaQuery.of(context).size.height * 0.07,
                     left: AppDimensions.normalize(5),
                     right: AppDimensions.normalize(5),
                   ),
@@ -140,18 +149,18 @@ class _SurahIndexScreenState extends State<SurahIndexScreen> {
                         setState(() {
                           var lowerCaseQuery = value.toLowerCase();
 
-                          searchedChapters = chapters!.where((chapter) {
-                            final chapterName = chapter!.englishName!
+                          searchedChapters = surahs!.where((surah) {
+                            final chapterName = surah!.namaLatin!
                                 .toLowerCase()
                                 .contains(lowerCaseQuery);
                             return chapterName;
                           }).toList(growable: false)
                             ..sort(
-                              (a, b) => a!.englishName!
+                              (a, b) => a!.nama!
                                   .toLowerCase()
                                   .indexOf(lowerCaseQuery)
                                   .compareTo(
-                                    b!.englishName!
+                                    b!.nama!
                                         .toLowerCase()
                                         .indexOf(lowerCaseQuery),
                                   ),
@@ -161,7 +170,7 @@ class _SurahIndexScreenState extends State<SurahIndexScreen> {
                     },
                     decoration: InputDecoration(
                       contentPadding: Space.h,
-                      hintText: 'Search Surah here...',
+                      hintText: 'Cari Surat...',
                       hintStyle: AppText.b2!.copyWith(
                         color: AppTheme.c!.textSub2,
                       ),
@@ -187,7 +196,7 @@ class _SurahIndexScreenState extends State<SurahIndexScreen> {
               if (chapters!.isNotEmpty)
                 Container(
                   margin: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.28,
+                    top: MediaQuery.of(context).size.height * 0.15,
                   ),
                   child: searchedChapters!.isNotEmpty
                       ? ListView.separated(
@@ -196,13 +205,13 @@ class _SurahIndexScreenState extends State<SurahIndexScreen> {
                           ),
                           itemCount: searchedChapters!.length,
                           itemBuilder: (context, index) {
-                            final chapter = searchedChapters![index];
+                            final surah = searchedChapters![index];
                             final chapterId = chapterIds!
                                 .where((chapterId) =>
-                                    chapterId!.number == chapter!.number)
+                                    chapterId!.number == surah!.nomor)
                                 .toList()[0];
                             return SurahTile(
-                              chapter: chapter,
+                              surah: surah,
                               chapterId: chapterId,
                             );
                           },
@@ -213,10 +222,10 @@ class _SurahIndexScreenState extends State<SurahIndexScreen> {
                           ),
                           itemCount: chapters!.length,
                           itemBuilder: (context, index) {
-                            final chapter = chapters![index];
+                            final surah = surahs![index];
                             final chapterId = chapterIds![index];
                             return SurahTile(
-                              chapter: chapter,
+                              surah: surah,
                               chapterId: chapterId,
                             );
                           },

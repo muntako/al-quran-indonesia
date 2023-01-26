@@ -4,7 +4,7 @@ import 'package:al_quran/configs/configs.dart';
 import 'package:al_quran/cubits/bookmarks/cubit.dart';
 import 'package:al_quran/cubits/chapterId/cubit.dart';
 import 'package:al_quran/cubits/juz/cubit.dart';
-import 'package:al_quran/cubits/juzId/cubit.dart';
+import 'package:al_quran/cubits/surat/cubit.dart';
 import 'package:al_quran/utils/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,10 +35,11 @@ class _SplashScreenState extends State<SplashScreen> {
     final chapterCubit = ChapterCubit.cubit(context);
     final juzCubit = JuzCubit.cubit(context);
     final chapterIdCubit = ChapterIdCubit.cubit(context);
+    final surahCubit = SurahCubit.cubit(context);
 
+    await surahCubit.fetch();
     await chapterCubit.fetch();
     await chapterIdCubit.fetch();
-
     await bookmarkCubit.fetch();
 
     for (int i = 1; i <= 30; i++) {

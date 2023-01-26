@@ -18,33 +18,18 @@ class ChapterAdapter extends TypeAdapter<Chapter> {
     };
     return Chapter(
       number: fields[0] as int?,
-      name: fields[1] as String?,
-      englishName: fields[2] as String?,
-      englishNameTranslation: fields[3] as String?,
-      revelationType: fields[4] as String?,
-      ayahs: (fields[5] as List?)?.cast<Ayah?>(),
-      numberOfAyahs: fields[6] as int?,
+      ayahs: (fields[1] as List?)?.cast<Ayah?>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, Chapter obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(2)
       ..writeByte(0)
       ..write(obj.number)
       ..writeByte(1)
-      ..write(obj.name)
-      ..writeByte(2)
-      ..write(obj.englishName)
-      ..writeByte(3)
-      ..write(obj.englishNameTranslation)
-      ..writeByte(4)
-      ..write(obj.revelationType)
-      ..writeByte(5)
-      ..write(obj.ayahs)
-      ..writeByte(6)
-      ..write(obj.numberOfAyahs);
+      ..write(obj.ayahs);
   }
 
   @override

@@ -10,4 +10,5 @@ class AppRoutes {
   static const bookmarks = 'bookmarks';
   static const juz = 'juz';
   static const onboarding = 'onboarding';
+  static const setting = 'setting';
 }

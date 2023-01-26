@@ -1,8 +1,11 @@
 import 'package:al_quran/cubits/chapterId/cubit.dart';
 import 'package:al_quran/cubits/juzId/cubit.dart';
+import 'package:al_quran/cubits/surat/cubit.dart';
+import 'package:al_quran/models/bookmark/bookmark.dart';
 import 'package:al_quran/models/chapterId/chapterId.dart';
 import 'package:al_quran/models/juzId/juzId.dart';
 import 'package:al_quran/models/surah/surah.dart';
+import 'package:al_quran/screens/setting/setting_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +20,6 @@ import 'package:al_quran/cubits/juz/cubit.dart';
 import 'package:al_quran/models/ayah/ayah.dart';
 import 'package:al_quran/models/chapter/chapter.dart';
 import 'package:al_quran/models/juz/juz.dart';
-import 'package:al_quran/models/juzId/juzId.dart';
 import 'package:al_quran/providers/app_provider.dart';
 import 'package:al_quran/providers/onboarding_provider.dart';
 import 'package:al_quran/screens/bookmarks/bookmarks_screen.dart';
@@ -44,6 +46,7 @@ Future<void> main() async {
   Hive.registerAdapter<JuzId>(JuzIdAdapter());
   Hive.registerAdapter<ChapterId>(ChapterIdAdapter());
   Hive.registerAdapter<Surah>(SurahAdapter());
+  Hive.registerAdapter<Bookmark>(BookmarkAdapter());
 
   await Hive.openBox('app');
   await Hive.openBox('data');
@@ -73,6 +76,7 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(create: (_) => BookmarkCubit()),
         BlocProvider(create: (_) => JuzIdCubit()),
         BlocProvider(create: (_) => ChapterIdCubit()),
+        BlocProvider(create: (_) => SurahCubit()),
         ChangeNotifierProvider(create: (_) => AppProvider()),
         ChangeNotifierProvider(create: (_) => OnBoardingProvider()),
       ],
@@ -116,6 +120,7 @@ class MaterialChild extends StatelessWidget {
         AppRoutes.shareApp: (context) => const ShareAppScreen(),
         AppRoutes.bookmarks: (context) => const BookmarksScreen(),
         AppRoutes.onboarding: (context) => const OnboardingScreen(),
+        AppRoutes.setting: (context) => const SettingScreen(),
         AppRoutes.home: (context) =>
             HomeScreen(maxSlide: MediaQuery.of(context).size.width * 0.835),
       },

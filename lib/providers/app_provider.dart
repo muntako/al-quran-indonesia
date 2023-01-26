@@ -62,4 +62,64 @@ class AppProvider extends ChangeNotifier {
     );
     notifyListeners();
   }
+
+  double? _ayahFontSize = 23;
+  double get ayahFontSize => _ayahFontSize!;
+  void initAyahFontSize() {
+    double? size = _cache.get('ayahFontSize');
+
+    double? value = size == null ? size : _ayahFontSize;
+
+    if (size == null) {
+      _cache.put(
+        'ayahFontSize',
+        value.toString().split(".").last,
+      );
+      _ayahFontSize = size;
+    }
+    // _themeMode = theme;
+
+    notifyListeners();
+  }
+
+  void setAyahFontSize(double value) {
+    if (_ayahFontSize != value) {
+      _ayahFontSize = value;
+      _cache.put(
+        'ayahFontSize',
+        value.toString().split('.').last,
+      );
+      notifyListeners();
+    }
+  }
+
+  double? _artiFontSize = 15;
+  double get artiFontSize => _artiFontSize!;
+  void initArtiFontSize() {
+    double? size = _cache.get('artiFontSize');
+
+    double? value = size == null ? size : _artiFontSize;
+
+    if (size == null) {
+      _cache.put(
+        'artiFontSize',
+        value.toString().split(".").last,
+      );
+      _artiFontSize = size;
+    }
+    // _themeMode = theme;
+
+    notifyListeners();
+  }
+
+  void setArtiFontSize(double value) {
+    if (_artiFontSize != value) {
+      _artiFontSize = value;
+      _cache.put(
+        'artiFontSize',
+        value.toString().split('.').last,
+      );
+      notifyListeners();
+    }
+  }
 }

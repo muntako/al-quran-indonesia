@@ -1,7 +1,7 @@
 part of '../surah_index_screen.dart';
 
 class _SurahInformation extends StatefulWidget {
-  final Chapter? chapterData;
+  final Surah? chapterData;
   const _SurahInformation({
     Key? key,
     this.chapterData,
@@ -40,67 +40,77 @@ class _SurahInformationState extends State<_SurahInformation>
 
     return ScaleTransition(
       scale: scaleAnimation,
-      child: Center(
-        child: Material(
-          color: Colors.transparent,
-          child: Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 18.0, vertical: 10.0),
-            width: width * 0.75,
-            height: height * 0.37,
-            decoration: ShapeDecoration(
-              color: appProvider.isDark ? Colors.grey[850] : Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
+      alignment: Alignment.bottomCenter,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(vertical: 20.0),
+        child: Center(
+          child: Material(
+            color: Colors.transparent,
+            child: Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 18.0, vertical: 10.0),
+              width: width * 0.8,
+              decoration: ShapeDecoration(
+                color: appProvider.isDark ? Colors.grey[850] : Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
               ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Text(
-                  'Surah Information',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: height * 0.03,
-                  ),
-                ),
-                SizedBox(
-                  height: height * 0.02,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      widget.chapterData!.englishName!,
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                    Text(
-                      widget.chapterData!.name!,
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                  ],
-                ),
-                Text("Ayahs: ${widget.chapterData!.ayahs!.length}"),
-                Text("Surah Number: ${widget.chapterData!.number!}"),
-                Text("Revelation: ${widget.chapterData!.revelationType!}"),
-                Text("Meaning: ${widget.chapterData!.englishNameTranslation!}"),
-                SizedBox(
-                  height: height * 0.02,
-                ),
-                SizedBox(
-                  height: height * 0.05,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                        AppTheme.c!.accent,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Center(
+                    child: Text(
+                      'Informasi Surat',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: height * 0.03,
                       ),
                     ),
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text("OK"),
                   ),
-                )
-              ],
+                  SizedBox(
+                    height: height * 0.02,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        widget.chapterData!.namaLatin!,
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                      Text(
+                        widget.chapterData!.nama!,
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                    ],
+                  ),
+                  Text("Jumlah Ayat: ${widget.chapterData!.jumlahAyat}"),
+                  Text("Nomor Surat: ${widget.chapterData!.nomor!}"),
+                  Text("Tempat Turun: ${widget.chapterData!.tempatTurun!}"),
+                  Text("Arti: ${widget.chapterData!.arti!}"),
+                  const Text("Deskripsi:"),
+                  Html(
+                    data: widget.chapterData!.deskripsi,
+                    shrinkWrap: false,
+                  ),
+                  SizedBox(
+                    height: height * 0.02,
+                  ),
+                  SizedBox(
+                    height: height * 0.05,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                          AppTheme.c!.accent,
+                        ),
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text("OK"),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),

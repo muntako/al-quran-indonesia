@@ -19,7 +19,7 @@ class AyahAdapter extends TypeAdapter<Ayah> {
     return Ayah(
       number: fields[0] as num?,
       text: fields[1] as String?,
-      surah: fields[2] as Surah?,
+      surah: fields[2] as num?,
       numberInSurah: fields[3] as num?,
       juz: fields[4] as num?,
     );

@@ -2,10 +2,9 @@ import 'package:al_quran/configs/app.dart';
 import 'package:al_quran/configs/configs.dart';
 import 'package:al_quran/utils/assets.dart';
 import 'package:al_quran/utils/links.dart';
+import 'package:al_quran/widgets/app/app_bar.dart';
 import 'package:al_quran/widgets/app/app_version.dart';
-import 'package:al_quran/widgets/button/app_back_button.dart';
 import 'package:al_quran/widgets/custom_image.dart';
-import 'package:al_quran/widgets/app/title.dart';
 import 'package:flutter/material.dart';
 
 class HelpGuide extends StatelessWidget {
@@ -24,8 +23,8 @@ class HelpGuide extends StatelessWidget {
               opacity: 0.5,
               height: MediaQuery.of(context).size.height * 0.18,
             ),
-            const AppBackButton(),
-            const CustomTitle(title: "Help Guide"),
+            // const AppBackButton(),
+            const CustomAppBar(title: "Bantuan"),
             const Guidelines(),
             const AppVersion(),
           ],

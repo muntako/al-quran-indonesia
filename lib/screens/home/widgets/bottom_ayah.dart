@@ -6,13 +6,15 @@ class _AyahBottom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     App.init(context);
+    final ayah = Ayah.randomAyat(context);
+    final surah = Surah.fromNumber(context, ayah!.surah!);
 
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           Text(
-            "\"Indeed, It is We who sent down the Qur'an\nand indeed, We will be its Guardian\"",
+            ayah.text!,
             textAlign: TextAlign.center,
             style: AppText.b2!.copyWith(
               color: AppTheme.c!.text,
@@ -20,7 +22,8 @@ class _AyahBottom extends StatelessWidget {
           ),
           Space.y!,
           Text(
-            "Surah Al-Hijr\n",
+            "Surah ${surah!.namaLatin!} (${ayah.surah} : ${ayah.numberInSurah})",
+            textAlign: TextAlign.center,
             style: AppText.l1!.copyWith(
               color: AppTheme.c!.text,
             ),

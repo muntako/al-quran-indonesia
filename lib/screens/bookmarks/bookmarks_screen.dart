@@ -1,19 +1,24 @@
+import 'package:al_quran/animations/bottom_animation.dart';
 import 'package:al_quran/configs/app.dart';
-import 'package:al_quran/configs/app_dimensions.dart';
 import 'package:al_quran/configs/app_theme.dart';
 import 'package:al_quran/configs/app_typography.dart';
 import 'package:al_quran/cubits/bookmarks/cubit.dart';
+import 'package:al_quran/models/bookmark/bookmark.dart';
+import 'package:al_quran/models/chapter/chapter.dart';
+import 'package:al_quran/models/chapterId/chapterId.dart';
+import 'package:al_quran/models/juz/juz.dart';
+import 'package:al_quran/models/juzId/juzId.dart';
+import 'package:al_quran/models/surah/surah.dart';
 import 'package:al_quran/providers/app_provider.dart';
-import 'package:al_quran/screens/surah/surah_index_screen.dart';
-import 'package:al_quran/utils/assets.dart';
-import 'package:al_quran/widgets/button/app_back_button.dart';
-import 'package:al_quran/widgets/custom_image.dart';
+import 'package:al_quran/screens/bookmarks/bookmark_information.dart';
 import 'package:al_quran/widgets/loader/loading_shimmer.dart';
-import 'package:al_quran/widgets/app/title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
+part 'widgets/bookmark_tile.dart';
+
+// part 'widgets/bookmark_information.dart';
 class BookmarksScreen extends StatefulWidget {
   const BookmarksScreen({Key? key}) : super(key: key);
 
@@ -36,68 +41,60 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
     final bookmarkCubit = BookmarkCubit.cubit(context);
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Bookmarks',
+          style: TextStyle(fontFamily: 'Poopins'),
+        ),
+        foregroundColor:
+            appProvider.isDark ? Colors.white : AppTheme.c!.accentLight,
+        backgroundColor: appProvider.isDark
+            ? AppTheme.dark.background
+            : AppTheme.light.accent,
+      ),
       backgroundColor: appProvider.isDark ? Colors.grey[850] : Colors.white,
       body: SafeArea(
-        child: Stack(
-          children: [
-            if (!appProvider.isDark)
-              CustomImage(
-                opacity: 0.3,
-                height: AppDimensions.normalize(60),
-                imagePath: StaticAssets.sajda,
-              ),
-            const AppBackButton(),
-            const CustomTitle(
-              title: 'Bookmarks',
-            ),
-            Container(
-              margin: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height * 0.22,
-              ),
-              child: BlocBuilder<BookmarkCubit, BookmarkState>(
-                builder: (context, state) {
-                  if (state is BookmarkFetchLoading) {
-                    return const Center(
-                      child: LoadingShimmer(
-                        text: 'Getting your bookmarks...',
-                      ),
-                    );
-                  } else if (state is BookmarkFetchSuccess &&
-                      state.data!.isEmpty) {
-                    return Center(
-                      child: Text(
-                        'No Bookmarks yet!',
-                        style: AppText.b1b!.copyWith(
-                          color: AppTheme.c!.text,
-                        ),
-                      ),
-                    );
-                  } else if (state is BookmarkFetchSuccess) {
-                    return ListView.separated(
-                      separatorBuilder: (context, index) => const Divider(
-                        color: Color(0xff26c6da),
-                      ),
-                      itemCount: bookmarkCubit.state.data!.length,
-                      itemBuilder: (context, index) {
-                        final chapter = bookmarkCubit.state.data![index];
-                        return SurahTile(
-                          chapter: chapter,
-                        );
-                      },
-                    );
-                  }
-                  return Center(
-                    child: Text(
-                      state.message!,
-                      style: AppText.b1b!.copyWith(
-                        color: AppTheme.c!.text,
-                      ),
-                    ),
+        child: BlocBuilder<BookmarkCubit, BookmarkState>(
+          builder: (context, state) {
+            if (state is BookmarkFetchLoading) {
+              return const Center(
+                child: LoadingShimmer(
+                  text: 'Memuat data...',
+                ),
+              );
+            } else if (state is BookmarkFetchSuccess && state.data!.isEmpty) {
+              return Center(
+                child: Text(
+                  'Belum ada bookmark!',
+                  style: AppText.b1b!.copyWith(
+                    color: AppTheme.c!.text,
+                  ),
+                ),
+              );
+            } else if (state is BookmarkFetchSuccess) {
+              return ListView.separated(
+                separatorBuilder: (context, index) => const Divider(
+                  color: Color(0xff26c6da),
+                ),
+                itemCount: bookmarkCubit.state.data!.length,
+                itemBuilder: (context, index) {
+                  final bookmark = bookmarkCubit.state.data![index];
+                  return BookmarkTile(
+                    index: index,
+                    bookmark: bookmark,
                   );
                 },
+              );
+            }
+            return Center(
+              child: Text(
+                '',
+                style: AppText.b1b!.copyWith(
+                  color: AppTheme.c!.text,
+                ),
               ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );

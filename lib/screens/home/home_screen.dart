@@ -3,14 +3,21 @@ import 'dart:async';
 import 'dart:math' as math;
 import 'package:al_quran/app_routes.dart';
 import 'package:al_quran/configs/app.dart';
+import 'package:al_quran/cubits/bookmarks/cubit.dart';
+import 'package:al_quran/models/ayah/ayah.dart';
+import 'package:al_quran/models/chapter/chapter.dart';
+import 'package:al_quran/models/chapterId/chapterId.dart';
+import 'package:al_quran/models/juz/juz.dart';
+import 'package:al_quran/models/juzId/juzId.dart';
+import 'package:al_quran/models/surah/surah.dart';
 import 'package:al_quran/providers/app_provider.dart';
+import 'package:al_quran/screens/bookmarks/bookmark_information.dart';
 import 'package:al_quran/utils/drawer.dart';
 import 'package:al_quran/widgets/button/app_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:al_quran/configs/configs.dart';
-import 'package:al_quran/widgets/app/app_name.dart';
-import 'package:al_quran/widgets/quran_rail.dart';
 import 'package:al_quran/widgets/calligraphy.dart';
 import 'package:al_quran/widgets/app/app_version.dart';
 import 'package:al_quran/widgets/app/drawer_app_name.dart';
@@ -87,14 +94,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             title: const Text(
-              "Exit Application",
+              "Keluar aplikasi",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            content: const Text("Are You Sure?"),
+            content: const Text("Anda yakin?"),
             actions: <Widget>[
               TextButton(
                 child: const Text(
-                  "Yes",
+                  "Ya",
                   style: TextStyle(color: Colors.red),
                 ),
                 onPressed: () {
@@ -103,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ),
               TextButton(
                 child: const Text(
-                  "No",
+                  "Tidak",
                   style: TextStyle(color: Colors.blue),
                 ),
                 onPressed: () {

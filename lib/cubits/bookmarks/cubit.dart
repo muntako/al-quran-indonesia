@@ -1,4 +1,4 @@
-import 'package:al_quran/models/chapter/chapter.dart';
+import 'package:al_quran/models/bookmark/bookmark.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,43 +13,61 @@ class BookmarkCubit extends Cubit<BookmarkState> {
 
   BookmarkCubit() : super(BookmarkDefault());
 
-  Future<void> fetch() async {
+  Future<void> fetch({bool lastRead = false}) async {
     emit(const BookmarkFetchLoading());
     try {
-      List<Chapter?>? data = await BookmarksDataProvider.fetch();
+      List<Bookmark?>? data =
+          await BookmarksDataProvider.fetch(lastRead: lastRead);
 
-      emit(BookmarkFetchSuccess(data: data, isBookmarked: false));
+      emit(BookmarkFetchSuccess(data: data, isLastRead: lastRead));
     } catch (e) {
       emit(BookmarkFetchFailed(message: e.toString()));
     }
   }
 
-  Future<void> updateBookmark(Chapter chapter, bool add) async {
+  Future<void> updateBookmark(
+      {Bookmark? bookmark, bool lastRead = false}) async {
     emit(const BookmarkFetchLoading());
     try {
-      List<Chapter?>? data = [];
-      if (add) {
-        data = await BookmarksDataProvider.addBookmark(chapter);
-      } else {
-        data = await BookmarksDataProvider.removeBookmark(chapter);
-      }
+      List<Bookmark?>? data = [];
+
+      Bookmark book = bookmark!.copyWith(
+          number: bookmark.number,
+          juz: bookmark.juz,
+          surah: bookmark.surah,
+          numberInSurah: bookmark.numberInSurah,
+          terakhirDibaca: lastRead);
+      data = await BookmarksDataProvider.addBookmark(book);
       emit(
-        BookmarkFetchSuccess(data: data, isBookmarked: add),
+        BookmarkFetchSuccess(data: data, isLastRead: lastRead),
       );
     } catch (e) {
       emit(BookmarkFetchFailed(message: e.toString()));
     }
   }
 
-  Future<void> checkBookmarked(Chapter chapter) async {
+  Future<void> removeBookmark(Bookmark bookmark) async {
     emit(const BookmarkFetchLoading());
     try {
-      final isBookmarked = await BookmarksDataProvider.checkBookmarked(chapter);
+      List<Bookmark?>? data = [];
+      data = await BookmarksDataProvider.removeBookmark(bookmark);
+      emit(
+        BookmarkFetchSuccess(data: data),
+      );
+    } catch (e) {
+      emit(BookmarkFetchFailed(message: e.toString()));
+    }
+  }
+
+  Future<void> checkBookmarked(Bookmark bookmark) async {
+    emit(const BookmarkFetchLoading());
+    try {
+      final isLastRead = await BookmarksDataProvider.checkBookmarked(bookmark);
       final data = await BookmarksDataProvider.fetch();
       emit(
         BookmarkFetchSuccess(
           data: data,
-          isBookmarked: isBookmarked ?? false,
+          isLastRead: isLastRead ?? false,
         ),
       );
     } catch (e) {

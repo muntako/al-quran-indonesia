@@ -19,13 +19,13 @@ class JuzIdCubit extends Cubit<JuzIdState> {
 
   final repo = JuzIdRepository();
 
-  Future<void> fetch(num JuzIdNumber) async {
+  Future<void> fetch(num juzIdNumber) async {
     emit(const JuzIdFetchLoading());
 
     try {
-      JuzId? cached = await repo.juzFetchHive(JuzIdNumber);
+      JuzId? cached = await repo.juzFetchHive(juzIdNumber);
       if (cached == null) {
-        JuzId? data = await repo.juzFetchApi(JuzIdNumber);
+        JuzId? data = await repo.juzFetchApi(juzIdNumber);
         emit(JuzIdFetchSuccess(data: data));
       } else {
         emit(JuzIdFetchSuccess(data: cached));

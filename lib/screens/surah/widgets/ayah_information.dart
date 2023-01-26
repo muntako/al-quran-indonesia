@@ -2,7 +2,9 @@ part of '../surah_index_screen.dart';
 
 class _AyahInformation extends StatefulWidget {
   final Ayah? ayah;
-  const _AyahInformation({Key? key, this.ayah}) : super(key: key);
+  final BookmarkCubit? bookmarkCubit;
+  const _AyahInformation({Key? key, this.ayah, this.bookmarkCubit})
+      : super(key: key);
 
   @override
   _AyahInformationState createState() => _AyahInformationState();
@@ -34,7 +36,9 @@ class _AyahInformationState extends State<_AyahInformation>
     final appProvider = Provider.of<AppProvider>(context);
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+    final bookmark = Bookmark.fromMap(widget.ayah!.toMap());
 
+    final surah = Surah.fromNumber(context, widget.ayah!.surah!);
     return ScaleTransition(
       scale: scaleAnimation,
       child: Center(
@@ -55,11 +59,13 @@ class _AyahInformationState extends State<_AyahInformation>
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text(
-                  'Ayah Information',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: height * 0.03,
+                Center(
+                  child: Text(
+                    'Informasi Ayat',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: height * 0.03,
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -69,19 +75,17 @@ class _AyahInformationState extends State<_AyahInformation>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      widget.ayah!.surah!.name!,
+                      surah == null ? '' : surah.namaLatin!,
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                     Text(
-                      widget.ayah!.surah!.englishName!,
+                      surah == null ? '' : surah.nama!,
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ],
                 ),
-                Text("number In Surah: ${widget.ayah!.numberInSurah}"),
-                Text("Surah Number: ${widget.ayah!.surah!.number}"),
-                Text("Revelation: ${widget.ayah!.surah!.revelationType!}"),
-                Text("Meaning: ${widget.ayah!.surah!.englishNameTranslation!}"),
+                Text("Nomor urut pada surat: ${widget.ayah!.numberInSurah}"),
+                Text("turun di ${surah!.tempatTurun!}"),
                 SizedBox(
                   height: height * 0.02,
                 ),
@@ -93,8 +97,44 @@ class _AyahInformationState extends State<_AyahInformation>
                         AppTheme.c!.accent,
                       ),
                     ),
+                    onPressed: () async {
+                      await widget.bookmarkCubit?.updateBookmark(
+                        bookmark: bookmark,
+                      );
+                      Navigator.pop(context);
+                    },
+                    child: const Text("Bookmark"),
+                  ),
+                ),
+                SizedBox(
+                  height: height * 0.05,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        AppTheme.c!.accent,
+                      ),
+                    ),
+                    onPressed: () async {
+                      await widget.bookmarkCubit
+                          ?.updateBookmark(bookmark: bookmark, lastRead: true);
+                      Navigator.pop(context);
+                    },
+                    child: const Text("Terakhir dibaca"),
+                  ),
+                ),
+                SizedBox(
+                  height: height * 0.05,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        Colors.white,
+                      ),
+                    ),
                     onPressed: () => Navigator.pop(context),
-                    child: const Text("OK"),
+                    child: Text(
+                      "Tutup",
+                      style: TextStyle(color: AppTheme.c!.accent!),
+                    ),
                   ),
                 )
               ],

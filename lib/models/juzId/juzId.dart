@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:al_quran/cubits/juzId/cubit.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:al_quran/models/ayah/ayah.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 
 part 'juzId.g.dart';
@@ -47,6 +49,12 @@ class JuzId {
       number: map['number'],
       ayahs: List<Ayah>.from(map['ayahs']?.map((x) => Ayah.fromMap(x))),
     );
+  }
+  static Future<JuzId?> fromIndex(BuildContext context, int index) async {
+    JuzIdCubit juzCubit = JuzIdCubit.cubit(context);
+    await juzCubit.fetch(index);
+    final juz = juzCubit.state.data;
+    return juz;
   }
 
   String toJson() => json.encode(toMap());
